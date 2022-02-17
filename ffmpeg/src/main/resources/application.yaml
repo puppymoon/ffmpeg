@@ -1,0 +1,19 @@
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+      max-request-size: 20MB
+      location: "${java.io.tmpdir}"
+      resolve-lazily: false
+      file-size-threshold: 1MB
+  web:
+    resources:
+      static-locations:
+        - "classpath:/static/"
+        - "file:${app.video-folder}"
+server:
+  port: 8080
+app:
+  video-folder: src/main/resources/static/video
+
