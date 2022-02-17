@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>upload</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<script>
+    const video = document.getElementById("video");
+
+    function upload(e) {
+        let files = e.target.files;
+        if (!files) {
+            return;
+        }
+        let formData = new FormData();
+        formData.append("file", files[0]);
+        fetch("/upload", {
+            method: "POST",
+            body: formData
+        })
+            .then((resp) => resp.json())
+            .then(json => {
+                alert("upload success.");
+                console.log(json);
+            })
+            .catch((err) => {
+                alert("upload video failed, please check console.");
+                console.log(err);
+                throw err;
+            });
+    }
+</script>
+
+<body>
+    <div>
+        <h1>請選擇上傳影片</h1>
+        <input name="file" type="file" accept="video/*" onchange="upload(event)" />
+        <p><a href="#" th:href="@{/index}">回首頁</a></p>
+    </div>
+</body>
+
+</html>

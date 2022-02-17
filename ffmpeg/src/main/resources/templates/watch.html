@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>查看影片清單</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<script>
+
+    function getVideoList() {
+
+        let formData = new FormData();
+
+        fetch("/video/getVideoList", {
+            method: "GET"
+        })
+            .then((resp) => resp.json())
+            .then(json => {
+                for (var i = 0; i < json.length; i++) {
+                    console.log(json[i]);
+                    var record = json[i].list;
+                    for (var j = 0; j < record.length; j++) {
+                        var tbodyRef = document.getElementById('myTable').getElementsByTagName('tbody')[0];
+                        var newRow = tbodyRef.insertRow();
+                        var newDate = document.createTextNode(json[i].date);
+                        var newVideoName = document.createTextNode(record[j]);
+                        var windowOpen = '<a href="#" onclick="window.open(' + "'/video" + "?" + "date=" + json[i].date + "&" + "videoName=" + record[j] + "'" + ');">點此</a>';
+                        newRow.insertCell().appendChild(newDate);
+                        newRow.insertCell().appendChild(newVideoName);
+                        var newLink = newRow.insertCell();
+                        newLink.innerHTML = windowOpen;
+                    }
+                }
+                console.log(json);
+            })
+            .catch((err) => {
+                alert("getVideoList failed, please check console.");
+                console.log(err);
+                throw err;
+            });
+    }
+    getVideoList();
+</script>
+
+<body>
+    <div class="container" style="max-width:600px;margin-top: 50px">
+        <table width="100%" class="table table-striped table-bordered table-hover" id="myTable">
+            <thead>
+                <tr>
+                    <th>日期</th>
+                    <th>影片名稱</th>
+                    <th>連結</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <div>
+            <p><a href="#" th:href="@{/index}">回首頁</a></p>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,29 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.min.js"></script>
+</head>
+
+<body>
+    <video id="video" width="100%" controls="controls"></video>
+</body>
+<script th:inline="javascript">
+
+    var date = [[${ date }]];
+    var videoName = [[${ videoName }]];
+    console.log(date);
+    console.log(videoName);
+
+    const video = document.getElementById('video');
+
+    function loadVideo() {
+        var hls = new Hls();
+        hls.loadSource('video'+'/'+date+'/'+videoName+'/'+'index.m3u8');
+        hls.attachMedia(video);
+    }
+    loadVideo();
+</script>
+
+</html>
